@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Карта</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="https://api-maps.yandex.ru/1.1/index.xml" type="text/javascript" ></script>
+    <script  type="text/javascript"  th:inline="javascript">
+
+        // Создает обработчик события window.onLoad
+        YMaps.jQuery(function () {
+            // Создает экземпляр карты и привязывает его к созданному контейнеру
+            var map = new YMaps.Map(YMaps.jQuery("#YMapsID")[0]);
+
+            // Устанавливает начальные параметры отображения карты: центр карты и коэффициент масштабирования
+            map.setCenter(new YMaps.GeoPoint(39.64, 59.76), 5);
+
+            //var point = new YMaps.GeoPoint(37.609218,55.753559); // Координаты центра Москвы
+            map.setType(YMaps.MapType.HYBRID);
+            map.addControl(new YMaps.TypeControl());
+            map.addControl(new YMaps.ToolBar());
+            map.addControl(new YMaps.Zoom());
+            map.addControl(new YMaps.ScaleLine());
+            map.enableScrollZoom();
+
+            map.addOverlay(new YMaps.Polyline([ new YMaps.GeoPoint(37.7,55.7),
+                new YMaps.GeoPoint(37.7,55.8),
+                new YMaps.GeoPoint(37.6,55.7),
+                new YMaps.GeoPoint(37.8,55.8)]));
+
+            // Создает метку в центре Москвы
+            var placemark = new YMaps.Placemark(new YMaps.GeoPoint(37.609218,55.753559));
+
+            // Устанавливает содержимое балуна
+            placemark.name = "Москва";
+            placemark.description = "Столица Российской Федерации";
+
+            // Добавляет метку на карту
+            map.addOverlay(placemark);
+
+            ///////////////////////////////////////////////
+
+            let line = new YMaps.Polyline();
+            let lat = /*[[${lat}]]*/ [];
+            let lng = /*[[${lng}]]*/ [];
+            for (var i=0;i<lat.length;i++) {
+                line.addPoint(new YMaps.GeoPoint(lat[i],lng[i]));
+            }
+            map.addOverlay(line);
+        })
+    </script>
+    
+</head>
+
+<body>
+<form  method="get" th:action="@{/map}">
+    <h3>Отфильтровать координаты по дате</h3>
+    <span >От</span>
+    <input type="datetime-local" name="startDate">
+    <span >До</span>
+    <input type="datetime-local" name="endDate">
+    <button type="submit">Выбрать</button>
+</form>
+<br>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Выход"/>
+</form>
+<div id="YMapsID" style="width:70%;height:800px; margin:0 auto"></div>
+<div th:each="c: ${coordinates}">
+    <h4 th:text="${c.getId()}"></h4>
+    <h5 th:text="${c.getLatitude()}"></h5>
+    <h5 th:text="${c.getLongitude()}"></h5>
+</div>
+</body>
+</html>
