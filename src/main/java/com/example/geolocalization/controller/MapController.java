@@ -46,7 +46,7 @@ public class MapController {
         model.addAttribute("lat",mapService.getLat(coordinatesEntityList));
         model.addAttribute("lng",mapService.getLng(coordinatesEntityList));
 
-        return "/map2";
+        return "/map";
     }
 
     @PostMapping
