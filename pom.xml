@@ -90,7 +90,7 @@
                     </excludes>
                 </configuration>
             </plugin>
-
+<!--Без этого плагина не собирался проект на Heroku-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
