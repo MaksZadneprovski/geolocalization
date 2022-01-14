@@ -1,49 +1,39 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+
+<!--Первая версия Яндекс Карт-->
+
     <title>Карта</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-    <script src="https://api-maps.yandex.ru/1.1/index.xml" type="text/javascript" ></script>
-    <script  type="text/javascript"  th:inline="javascript">
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=116c8366-f120-46d6-8f0f-311e5c63cbfd&lang=ru_RU" type="text/javascript"></script>
+    <script type="text/javascript" th:inline="javascript">
 
-        // Создает обработчик события window.onLoad
-        YMaps.jQuery(function () {
-            // Создает экземпляр карты и привязывает его к созданному контейнеру
-            var map = new YMaps.Map(YMaps.jQuery("#YMapsID")[0]);
+        ymaps.ready(init);
 
-            // Устанавливает начальные параметры отображения карты: центр карты и коэффициент масштабирования
-            map.setCenter(new YMaps.GeoPoint(39.64, 59.76), 5);
+        function init(){
+            let myMap = new ymaps.Map("map", {center: [55.76, 37.64], zoom: 7});
 
-            //var point = new YMaps.GeoPoint(37.609218,55.753559); // Координаты центра Москвы
-            map.setType(YMaps.MapType.HYBRID);
-            map.addControl(new YMaps.TypeControl());
-            map.addControl(new YMaps.ToolBar());
-            map.addControl(new YMaps.Zoom());
-            map.addControl(new YMaps.ScaleLine());
-            map.enableScrollZoom();
+            // Создание экземпляра объекта geo и передача нашей геометрии конструктору.
+            let lineStringGeoObject = new ymaps.GeoObject({
+                // Описываем геометрию геообъекта.
+                geometry: {type: "LineString"}});
 
-
-
-            ///////////////////////////////////////////////
-            var s = new YMaps.Style();
-            s.lineStyle = new YMaps.LineStyle();
-            s.lineStyle.strokeColor = '0000FF55';
-            s.lineStyle.strokeWidth = '9';
-            YMaps.Styles.add("example#CustomLine", s);
-
-            let line = new YMaps.Polyline();
             let lat = /*[[${lat}]]*/ [];
             let lng = /*[[${lng}]]*/ [];
-            for (var i=0;i<lat.length;i++) {
-                line.addPoint(new YMaps.GeoPoint(lat[i],lng[i]));
-            }
-            line.setStyle("example#CustomLine");
-            map.addOverlay(line);
 
-        })
+            for (let i=0;i<lat.length;i++) {
+                // Изменение вершин с помощью свойства "геометрия" геообъекта.
+                lineStringGeoObject.geometry.insert(i, [lat[i],lng[i]]);
+            }
+
+            // Добавляем линии на карту.
+            myMap.geoObjects.add(lineStringGeoObject);
+        }
     </script>
+
 </head>
 
 <body>
@@ -75,7 +65,7 @@
     </div>
 
 
-    <div id="YMapsID" style="width:100% ;height:500px; margin:0 auto"></div>
+    <div id="map" style="width:100% ;height:500px"></div>
 
     <div th:each="c: ${coordinates}">
         <h4 th:text="${c.getId()}"></h4>
