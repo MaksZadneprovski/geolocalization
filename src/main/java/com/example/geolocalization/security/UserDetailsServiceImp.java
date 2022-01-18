@@ -1,24 +1,23 @@
-package com.example.geolocalization.service;
+package com.example.geolocalization.security;
 
+import com.example.geolocalization.entity.Role;
 import com.example.geolocalization.entity.UserEntity;
 import com.example.geolocalization.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.Optional;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserDetailsServiceImp implements UserDetailsService {
 
-    final
-    UserRepo userRepo;
+    final UserRepo userRepo;
 
-    public UserService(UserRepo userRepo) {
+    @Autowired
+    public UserDetailsServiceImp(UserRepo userRepo) {
         this.userRepo = userRepo;
     }
 
@@ -29,7 +28,7 @@ public class UserService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        return user;
+        return UserSecurity.fromUser(user);
     }
 
     public UserEntity findUserById(Long userId) {
@@ -49,7 +48,7 @@ public class UserService implements UserDetailsService {
         }
 
         user.setPassword("{noop}"+user.getPassword());
-        user.setRole("ROLE_USER");
+        user.setRole(Role.USER);
         userRepo.save(user);
         return true;
     }

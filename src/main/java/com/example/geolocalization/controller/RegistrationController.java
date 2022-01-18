@@ -1,7 +1,7 @@
 package com.example.geolocalization.controller;
 
 import com.example.geolocalization.entity.UserEntity;
-import com.example.geolocalization.service.UserService;
+import com.example.geolocalization.security.UserDetailsServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class RegistrationController {
 
     @Autowired
-    private UserService userService;
+    private UserDetailsServiceImp userService;
 
     @GetMapping
     public String registration(Model model) {

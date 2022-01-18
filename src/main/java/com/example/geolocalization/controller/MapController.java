@@ -2,10 +2,7 @@ package com.example.geolocalization.controller;
 
 
 import com.example.geolocalization.entity.CoordinatesEntity;
-import com.example.geolocalization.entity.UserEntity;
-import com.example.geolocalization.repository.UserRepo;
 import com.example.geolocalization.service.MapService;
-import com.example.geolocalization.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller

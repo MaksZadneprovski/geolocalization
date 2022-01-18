@@ -4,13 +4,12 @@ import com.example.geolocalization.entity.CoordinatesEntity;
 import com.example.geolocalization.entity.UserEntity;
 import com.example.geolocalization.repository.CoordinatesRepo;
 import com.example.geolocalization.repository.UserRepo;
+import com.example.geolocalization.security.UserDetailsServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Date;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +20,7 @@ public class MapService {
     @Autowired
     private UserRepo userRepo;
     @Autowired
-    private UserService userService;
+    private UserDetailsServiceImp userService;
     @Autowired
     private CoordinatesRepo coordinatesRepo;
 
