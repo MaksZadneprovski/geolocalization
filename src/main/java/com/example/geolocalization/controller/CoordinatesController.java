@@ -19,20 +19,24 @@ public class CoordinatesController {
     private UserRepo userRepo;
 
     @GetMapping
-    public ResponseEntity getCoordinates(@RequestParam String name){
-        return ResponseEntity.ok(userRepo.findByUsername(name).getCoordinatesEntityList());
+    public ResponseEntity getCoordinates(@RequestParam String password){
+        return ResponseEntity.ok(userRepo.findByPassword(password).getCoordinatesEntityList());
     }
 
     @PostMapping
-    public ResponseEntity saveCoordinates(@RequestBody CoordinatesEntity coordinates){
+    public ResponseEntity saveCoordinates(@RequestBody CoordinatesEntity coordinates,
+                                          @RequestParam String password){
         try {
-            coordinates.setTime(new Date());
-            coordinatesRepo.save(coordinates);
-            return ResponseEntity.ok("Координаты сохранены");
+            Long id = userRepo.findByUsername(password).getId();
+            if (id != null){
+                coordinates.setUserId(id);
+                coordinates.setTime(new Date());
+                coordinatesRepo.save(coordinates);
+                return ResponseEntity.ok("Координаты сохранены");
+            }
+            return  ResponseEntity.ok("Неверный пароль");
         }catch (Exception e){
             return ResponseEntity.badRequest().body("Произошла ошибка");
         }
     }
-
-
 }
