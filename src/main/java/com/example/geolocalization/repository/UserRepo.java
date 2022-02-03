@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface UserRepo extends CrudRepository<UserEntity,Long> {
     UserEntity findByUsername(String name);
-    UserEntity findByPassword(String name);
+    UserEntity findByKey(String key);
 
 }

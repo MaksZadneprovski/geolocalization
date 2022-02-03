@@ -1,6 +1,7 @@
 package com.example.geolocalization.controller;
 
 import com.example.geolocalization.entity.CoordinatesEntity;
+import com.example.geolocalization.entity.UserEntity;
 import com.example.geolocalization.repository.CoordinatesRepo;
 import com.example.geolocalization.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,23 +20,24 @@ public class CoordinatesController {
     private UserRepo userRepo;
 
     @GetMapping
-    public ResponseEntity getCoordinates(@RequestParam String password){
-        return ResponseEntity.ok(userRepo.findByPassword(password).getCoordinatesEntityList());
+    public ResponseEntity getCoordinates(@RequestParam String key){
+        return ResponseEntity.ok(userRepo.findByKey(key).getCoordinatesEntityList());
     }
 
     @PostMapping
     public ResponseEntity saveCoordinates(@RequestBody CoordinatesEntity coordinates,
-                                          @RequestParam String password){
+                                          @RequestParam String key){
         try {
-            Long id = userRepo.findByUsername(password).getId();
-            if (id != null){
-                coordinates.setUserId(id);
+            UserEntity user  = userRepo.findByKey(key);
+            if (user.getId() != null){
+                coordinates.setUserEntity(user);
                 coordinates.setTime(new Date());
                 coordinatesRepo.save(coordinates);
                 return ResponseEntity.ok("Координаты сохранены");
             }
             return  ResponseEntity.ok("Неверный пароль");
         }catch (Exception e){
+            e.printStackTrace();
             return ResponseEntity.badRequest().body("Произошла ошибка");
         }
     }

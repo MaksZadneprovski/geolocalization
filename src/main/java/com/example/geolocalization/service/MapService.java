@@ -56,7 +56,7 @@ public class MapService {
                 Date dateAfter = Date.from(timeAfter.atZone(ZoneId.systemDefault()).toInstant());
                 Date dateBefore = Date.from(timeBefore.atZone(ZoneId.systemDefault()).toInstant());
 
-                return new ArrayList<>(coordinatesRepo.findCoordinatesEntitiesByUserIdAndTimeAfterAndTimeBefore(userId,dateAfter,dateBefore));
+                return new ArrayList<>(coordinatesRepo.findCoordinatesEntitiesByUserEntityIdAndTimeAfterAndTimeBefore(userId,dateAfter,dateBefore));
             }else {
                 return new ArrayList<>(userRepo.findByUsername(name).getCoordinatesEntityList());
             }

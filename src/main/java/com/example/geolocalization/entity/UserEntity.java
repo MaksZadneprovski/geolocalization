@@ -1,29 +1,38 @@
 package com.example.geolocalization.entity;
 
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
-@Data
+@Getter
+@Setter
 @Entity
 public class UserEntity  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "us_id")
     private Long id;
+
+    @Column(name = "us_name")
     private String username;
+
+    @Column(name = "pass")
     private String password;
+
+    @Column(name = "us_key")
+    private String key;
+
     private Role role;
 
 
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    @OneToMany(mappedBy = "userEntity", fetch = FetchType.EAGER)
     private List<CoordinatesEntity> coordinatesEntityList;
 
     public UserEntity() {}
@@ -31,6 +40,7 @@ public class UserEntity  {
     public UserEntity(String username, String password) {
         this.username = username;
         this.password = password;
+        this.key = Base64.getEncoder().encodeToString(password.getBytes());
     }
 
     public Set<GrantedAuthority> getAuthorities() {

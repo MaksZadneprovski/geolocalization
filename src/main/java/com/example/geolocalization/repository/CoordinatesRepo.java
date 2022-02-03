@@ -11,6 +11,6 @@ import java.util.List;
 
 @Repository
 public interface CoordinatesRepo extends CrudRepository<CoordinatesEntity,Long> {
-    List<CoordinatesEntity> findCoordinatesEntitiesByUserId(Long userId);
-    List<CoordinatesEntity> findCoordinatesEntitiesByUserIdAndTimeAfterAndTimeBefore(Long userId, Date timeAfter, Date timeBefore);
+    List<CoordinatesEntity> findCoordinatesEntitiesByUserEntityId(Long userId);
+    List<CoordinatesEntity> findCoordinatesEntitiesByUserEntityIdAndTimeAfterAndTimeBefore(Long userId, Date timeAfter, Date timeBefore);
 }

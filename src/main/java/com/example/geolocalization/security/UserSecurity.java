@@ -1,6 +1,5 @@
 package com.example.geolocalization.security;
 
-import com.example.geolocalization.entity.Role;
 import com.example.geolocalization.entity.UserEntity;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,8 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Data
 public class UserSecurity implements UserDetails {
