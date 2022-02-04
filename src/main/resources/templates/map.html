@@ -80,10 +80,12 @@
 
     <div id="YMapsID" style="width:100% ;height:500px; margin:0 auto"></div>
 
-    <div th:each="c: ${coordinates}">
+    <div class="container" style="max-height: 500px">
+    <div   th:each="c: ${coordinates}">
         <h4 th:text="${c.getId()}"></h4>
         <h5 th:text="${c.getLatitude()}"></h5>
         <h5 th:text="${c.getLongitude()}"></h5>
+    </div>
     </div>
 </div>
 

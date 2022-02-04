@@ -7,6 +7,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.*;
 
 @Getter
@@ -19,9 +21,13 @@ public class UserEntity  {
     @Column(name = "us_id")
     private Long id;
 
+    @NotEmpty(message = "Имя не должно быть пустым")
+    @Size(min = 5,max = 30,message = "Длина имени 5-30 символов")
     @Column(name = "us_name")
     private String username;
 
+    @NotEmpty(message = "Пароль не должен быть пустым")
+    @Size(min = 5,max = 30,message = "Длина пароля 5-30 символов")
     @Column(name = "pass")
     private String password;
 
@@ -37,13 +43,13 @@ public class UserEntity  {
 
     public UserEntity() {}
 
-    public UserEntity(String username, String password) {
-        this.username = username;
-        this.password = password;
-        this.key = Base64.getEncoder().encodeToString(password.getBytes());
-    }
+
 
     public Set<GrantedAuthority> getAuthorities() {
         return new HashSet<>(Arrays.asList(new SimpleGrantedAuthority(getRole().name())));
+    }
+
+    public void generateKey() {
+        this.key = Base64.getEncoder().encodeToString(getUsername().getBytes());
     }
 }

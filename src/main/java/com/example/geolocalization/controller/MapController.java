@@ -2,24 +2,30 @@ package com.example.geolocalization.controller;
 
 
 import com.example.geolocalization.entity.CoordinatesEntity;
+import com.example.geolocalization.entity.UserEntity;
+import com.example.geolocalization.repository.CoordinatesRepo;
+import com.example.geolocalization.repository.UserRepo;
 import com.example.geolocalization.service.MapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
 
 @Controller
+@Transactional
 @RequestMapping("/map")
 public class MapController {
 
     @Autowired
     private MapService mapService;
+    @Autowired
+    UserRepo userRepo;
+    @Autowired
+    CoordinatesRepo coordinatesRepo;
 
 
 
@@ -45,10 +51,11 @@ public class MapController {
         return "map2";
     }
 
-    @PostMapping
-    public String getRoute(){
-
-        return "map";
+    @PostMapping ("/delete")
+    public String deleteMap(Principal principal){
+        UserEntity user = userRepo.findByUsername(principal.getName());
+        coordinatesRepo.deleteByUserEntity(user);
+        return "redirect:/map";
     }
 
 }

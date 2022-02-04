@@ -5,7 +5,10 @@ import com.example.geolocalization.security.UserDetailsServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/registration")
@@ -15,16 +18,21 @@ public class RegistrationController {
     private UserDetailsServiceImp userService;
 
     @GetMapping
-    public String registration(Model model) {
-        model.addAttribute("userForm", new UserEntity());
+    public String registration(@ModelAttribute("user")  UserEntity user,Model model) {
         return "registration";
     }
 
     @PostMapping
-    public String addUser(@RequestParam("username")  String username,
-                          @RequestParam("password")  String password, Model model) {
+    public String addUser(@ModelAttribute("user") @Valid UserEntity user,
+                          BindingResult bindingResult,
+                          Model model) {
 
-        if (!userService.saveUser(new UserEntity(username,password))){
+        if (bindingResult.hasErrors()) {
+            System.out.println("########################################################");
+            return "registration";
+        }
+        user.generateKey();
+        if (!userService.saveUser(user)){
             model.addAttribute("usernameError", "Пользователь с таким именем уже существует");
             return "registration";
         }

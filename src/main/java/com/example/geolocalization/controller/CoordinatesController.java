@@ -41,4 +41,11 @@ public class CoordinatesController {
             return ResponseEntity.badRequest().body("Произошла ошибка");
         }
     }
+    @DeleteMapping
+    public ResponseEntity deleteCoordinates(@RequestParam String key){
+        UserEntity user = userRepo.findByKey(key);
+        coordinatesRepo.deleteByUserEntity(user);
+        return ResponseEntity.ok("Координаты удалены");
+    }
+
 }
