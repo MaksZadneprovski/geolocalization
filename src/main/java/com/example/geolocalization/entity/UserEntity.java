@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.*;
@@ -21,13 +22,15 @@ public class UserEntity  {
     @Column(name = "us_id")
     private Long id;
 
-    @NotEmpty(message = "Имя не должно быть пустым")
-    @Size(min = 5,max = 30,message = "Длина имени 5-30 символов")
+    @NotBlank
+    @NotEmpty(message = "Логин не должен быть пустым")
+    @Size(min = 5,max = 30,message = "Длина логина должна быть 5-30 символов")
     @Column(name = "us_name")
     private String username;
 
+    @NotBlank
     @NotEmpty(message = "Пароль не должен быть пустым")
-    @Size(min = 5,max = 30,message = "Длина пароля 5-30 символов")
+    @Size(min = 5,max = 30,message = "Длина пароля должна быть 5-30 символов")
     @Column(name = "pass")
     private String password;
 
